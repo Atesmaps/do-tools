@@ -51,7 +51,7 @@ jobs:
           source: ./atesmaps-do-tools.tar.gz
           target: /tmp
       - name: Load Docker Artifact
-        uses: appleboy/ssh-action@v1.0.2
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_PROD_HOST }}
           username: ${{ secrets.SSH_USER }}
