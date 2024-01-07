@@ -1,0 +1,74 @@
+name: Release & Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get latest tag
+        id: latest_tag
+        uses: WyriHaximus/github-action-get-previous-tag@v1
+      - name: Get next minor version
+        id: semvers
+        uses: WyriHaximus/github-action-next-semvers@v1
+        with:
+          version: ${{ steps.latest_tag.outputs.tag }}
+      - name: Build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile
+          push: false
+          tags: |
+            atesmaps-do-tools:latest
+      - name: Export Docker image
+        run: |
+          docker save atesmaps-do-tools:latest | gzip > ./atesmaps-do-tools.tar.gz
+      - name: Push Docker image artifact
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_PROD_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: ./atesmaps-do-tools.tar.gz
+          target: /tmp
+      - name: Load Docker Artifact
+        uses: appleboy/ssh-action@v1.0.2
+        with:
+          host: ${{ secrets.SSH_PROD_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            gunzip -c /tmp/atesmaps-do-tools.tar.gz | docker load
+            docker image prune -f
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.semvers.outputs.v_patch }}
+          release_name: ${{ steps.semvers.outputs.v_patch }}
+          body: |
+            New Atesmaps DigitalOcean Tools build released!
+          draft: false
+          prerelease: false
