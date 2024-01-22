@@ -44,7 +44,9 @@ class DigitalOcean:
                 snap = volume.snapshot(
                     name=f'{volume.name}-{datetime.now().strftime("%Y%m%d")}',
                 )
-                logger.info(f"Snapshot {snap['name']!r} created successfully.")
+                logger.info(
+                    f"Snapshot {snap['snapshot']['name']!r} created successfully."
+                )
         except Exception as exc:
             raise Exception("An error occurred backing up volumes.") from exc
 
