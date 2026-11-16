@@ -5,17 +5,16 @@ updates:
     schedule:
       interval: "weekly"
     commit-message:
-      prefix: "⬆Github Actions"
-      include: "scope"
+      prefix: "chore(deps)"
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
     commit-message:
-      prefix: "⬆PipEnv"
+      prefix: "chore(deps)"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
     commit-message:
-      prefix: "⬆Docker"
+      prefix: "chore(deps)"
