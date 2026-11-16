@@ -1,18 +1,29 @@
 ## Description
 
 <!--
-Please include a summary of the change, feature or which issue is fixed.
+For humans and for Claude Code: keep this template when opening a PR
+(`gh pr create --body`). Keep both sections ("Description" and "Types of
+changes"), replace the comments with real content and delete these comments.
+The PR title follows Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:` ...).
+
+Summarise the change and which issue it fixes: what changed and, above all,
+why (motivation and context). Link the issue or ticket if there is one
+(`Closes #123`). Mention anything the reviewer should check first, such as
+migrations, new env vars, infrastructure changes or manual steps after merging.
+Describe how you tested it (commands run, screenshots for UI changes).
 -->
 
 ## Types of changes
 
 <!--
-Please delete options that are not relevant.
+Keep only the options that apply and delete the others (do not leave the
+whole list in). Several can apply; a breaking change must say what breaks
+and how to migrate in the Description.
 -->
 
-- 🐞  Bugfix
-- ✨  New feature
-- 💥  Breaking change
-- 📝  Documentation Update
-- 🧼  Refactor
+- 🐞  Bugfix (non-breaking change which fixes an issue)
+- ✨  New feature (non-breaking change which adds functionality)
+- 💥  Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- 📝  Documentation update
+- 🧼  Refactor (cleanup of code that does not change its behavior)
 - 🔬  Test coverage improvement
