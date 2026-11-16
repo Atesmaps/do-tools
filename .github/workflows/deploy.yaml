@@ -42,7 +42,7 @@ jobs:
         run: |
           docker save atesmaps-do-tools:latest | gzip > ./atesmaps-do-tools.tar.gz
       - name: Push Docker image artifact
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SSH_PROD_HOST }}
           username: ${{ secrets.SSH_USER }}
